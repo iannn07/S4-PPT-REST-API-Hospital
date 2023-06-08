@@ -3,8 +3,9 @@ package patienthandler
 import (
 	"net/http"
 
+	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/hospital"
 )
 
 func SelectAll(c *gin.Context) {
@@ -19,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	patient := hospital.Patient{patientname: input.patientname, patientdob: input.patientdob, patientgender: input.patientgender}
+	patient := hospital.Patient{Patientname: input.Patientname, Patientdob: input.Patientdob, Patientgender: input.Patientgender}
 	hospital.DB.Create(&patient)
 
 	c.JSON(http.StatusOK, gin.H{"data": patient})
@@ -27,7 +28,7 @@ func Create(c *gin.Context) {
 
 func Read(c *gin.Context) {
 	var patient hospital.Patient
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&patient).Error; err != nil {
+	if err := hospital.DB.Where("PatientID = ?", c.Param("id")).First(&patient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -36,7 +37,7 @@ func Read(c *gin.Context) {
 
 func Update(c *gin.Context) {
 	var patient hospital.Patient
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&patient).Error; err != nil {
+	if err := hospital.DB.Where("PatientID = ?", c.Param("id")).First(&patient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -45,13 +46,13 @@ func Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
-	hospital.DB.Hospital(&patient).Updates(input)
+	hospital.DB.Model(&patient).Updates(input)
 	c.JSON(http.StatusOK, gin.H{"data": patient})
 }
 
 func Delete(c *gin.Context) {
-	var patient hospital.Doctor
-	if err := hospital.DB.Where("id = ?", c.Param("id")).First(&patient).Error; err != nil {
+	var patient hospital.Patient
+	if err := hospital.DB.Where("PatientID = ?", c.Param("id")).First(&patient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}

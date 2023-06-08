@@ -3,8 +3,9 @@ package roomhandler
 import (
 	"net/http"
 
+	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/hospital"
 )
 
 func SelectAll(c *gin.Context) {
@@ -19,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	room := hospital.Room{roomtype: input.roomtype}
+	room := hospital.Room{Roomtype: input.Roomtype}
 	hospital.DB.Create(&room)
 
 	c.JSON(http.StatusOK, gin.H{"data": room})
@@ -27,7 +28,7 @@ func Create(c *gin.Context) {
 
 func Read(c *gin.Context) {
 	var room hospital.Room
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&room).Error; err != nil {
+	if err := hospital.DB.Where("RoomID = ?", c.Param("id")).First(&room).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -36,7 +37,7 @@ func Read(c *gin.Context) {
 
 func Update(c *gin.Context) {
 	var room hospital.Room
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&room).Error; err != nil {
+	if err := hospital.DB.Where("RoomID = ?", c.Param("id")).First(&room).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -45,13 +46,13 @@ func Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
-	hospital.DB.Hospital(&room).Updates(input)
+	hospital.DB.Model(&room).Updates(input)
 	c.JSON(http.StatusOK, gin.H{"data": room})
 }
 
 func Delete(c *gin.Context) {
 	var room hospital.Room
-	if err := hospital.DB.Where("id = ?", c.Param("id")).First(&room).Error; err != nil {
+	if err := hospital.DB.Where("RoomID = ?", c.Param("id")).First(&room).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}

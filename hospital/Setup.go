@@ -5,12 +5,12 @@ import (
 	"gorm.io/gorm"
 )
 
-var database *gorm.DB
+var DB *gorm.DB
 
 func ConnectDB() {
-	db, err := gorm.Open(mysql.Open("root:@tcp(localhost:5050)/hospital-management"), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open("root:@tcp(localhost:3306)/finpro_ppt"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect!")
 	}
-	database = db
+	DB = db
 }

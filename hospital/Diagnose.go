@@ -1,9 +1,9 @@
 package hospital
 
 type Diagnose struct {
-	diagnoseid           int    `json:"DiagnosisID" gorm:"primary_key"`
-	patientid            int    `json:"PatientID"`
-	doctorid             int    `json:"DoctorID"`
-	diagnosisdate        string `json:"DiagnosisDate"`
-	diagnosisdescription string `json:"DiagnosisDescription"`
+	Diagnoseid           int    `json:"DiagnosisID" gorm:"column:DiagnosisID;primaryKey"`
+	Patientid            int    `json:"PatientID"`
+	Doctorid             int    `json:"DoctorID"`
+	Diagnosisdate        string `json:"DiagnosisDate"`
+	Diagnosisdescription string `json:"DiagnosisDescription"`
 }

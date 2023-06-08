@@ -1,7 +1,7 @@
 package hospital
 
 type Doctor struct {
-	doctorid      int    `json:"DoctorID" gorm:"primary_key"`
-	doctorname    string `json:"DoctorName"`
-	doctorlicense string `json:"DoctorLicense"`
+	Doctorid      int    `json:"DoctorID" gorm:"column:DoctorID;primaryKey"`
+	Doctorname    string `json:"DoctorName"`
+	Doctorlicense string `json:"DoctorLicense"`
 }

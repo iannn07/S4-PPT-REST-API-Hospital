@@ -1,7 +1,7 @@
 package hospital
 
 type Payment struct {
-	payid     int    `json:"PayID"  gorm:"primary_key"`
-	patientid int    `json:"PatientID"`
-	paytotal  string `json:"PayTotal"`
+	Payid     int    `json:"PayID"  gorm:"column:PayID;primaryKey"`
+	Patientid int    `json:"PatientID"`
+	Paytotal  string `json:"PayTotal"`
 }

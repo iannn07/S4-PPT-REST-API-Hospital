@@ -3,8 +3,9 @@ package doctorhandler
 import (
 	"net/http"
 
+	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/hospital"
 )
 
 func SelectAll(c *gin.Context) {
@@ -19,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	doctor := hospital.Doctor{doctorname: input.doctorname, doctorlicense: input.doctorlicense}
+	doctor := hospital.Doctor{Doctorname: input.Doctorname, Doctorlicense: input.Doctorlicense}
 	hospital.DB.Create(&doctor)
 
 	c.JSON(http.StatusOK, gin.H{"data": doctor})
@@ -27,7 +28,7 @@ func Create(c *gin.Context) {
 
 func Read(c *gin.Context) {
 	var doctor hospital.Doctor
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&doctor).Error; err != nil {
+	if err := hospital.DB.Where("DoctorID = ?", c.Param("id")).First(&doctor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -36,7 +37,7 @@ func Read(c *gin.Context) {
 
 func Update(c *gin.Context) {
 	var doctor hospital.Doctor
-	if err := doctor.DB.Where("id = ???", c.Param("id")).First(&doctor).Error; err != nil {
+	if err := hospital.DB.Where("DoctorID = ?", c.Param("id")).First(&doctor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -45,13 +46,13 @@ func Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
-	hospital.DB.Hospital(&doctor).Updates(input)
+	hospital.DB.Model(&doctor).Updates(input)
 	c.JSON(http.StatusOK, gin.H{"data": doctor})
 }
 
 func Delete(c *gin.Context) {
 	var doctor hospital.Doctor
-	if err := hospital.DB.Where("id = ?", c.Param("id")).First(&doctor).Error; err != nil {
+	if err := hospital.DB.Where("DoctorID = ?", c.Param("id")).First(&doctor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}

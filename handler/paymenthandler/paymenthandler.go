@@ -3,8 +3,9 @@ package paymenthandler
 import (
 	"net/http"
 
+	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/hospital"
 )
 
 func SelectAll(c *gin.Context) {
@@ -19,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	payment := hospital.Payment{paytotal: input.paytotal}
+	payment := hospital.Payment{Paytotal: input.Paytotal}
 	hospital.DB.Create(&payment)
 
 	c.JSON(http.StatusOK, gin.H{"data": payment})
@@ -27,7 +28,7 @@ func Create(c *gin.Context) {
 
 func Read(c *gin.Context) {
 	var payment hospital.Payment
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&payment).Error; err != nil {
+	if err := hospital.DB.Where("PayID = ?", c.Param("id")).First(&payment).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -36,7 +37,7 @@ func Read(c *gin.Context) {
 
 func Update(c *gin.Context) {
 	var payment hospital.Payment
-	if err := hospital.DB.Where("id = ???", c.Param("id")).First(&payment).Error; err != nil {
+	if err := hospital.DB.Where("PayID = ?", c.Param("id")).First(&payment).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
@@ -45,13 +46,13 @@ func Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
-	hospital.DB.Hospital(&payment).Updates(input)
+	hospital.DB.Model(&payment).Updates(input)
 	c.JSON(http.StatusOK, gin.H{"data": payment})
 }
 
 func Delete(c *gin.Context) {
 	var payment hospital.Payment
-	if err := hospital.DB.Where("id = ?", c.Param("id")).First(&payment).Error; err != nil {
+	if err := hospital.DB.Where("PayID = ?", c.Param("id")).First(&payment).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}

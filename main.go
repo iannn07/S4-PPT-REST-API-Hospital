@@ -1,76 +1,54 @@
 package main
-// Caca
+
 import (
-<<<<<<< HEAD
+	"HospitalFinpro/handler/diagnosehandler"
+	"HospitalFinpro/handler/doctorhandler"
+	"HospitalFinpro/handler/patienthandler"
+	"HospitalFinpro/handler/paymenthandler"
+	"HospitalFinpro/handler/roomhandler"
+	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/handler/diagnosehandler"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/handler/doctorhandler"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/handler/patienthandler"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/handler/paymenthandler"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/handler/roomhandler"
-	"github.com/iann07/S4-PPT-REST-API-Hospital.git/hospital"
 )
 
 func main() {
 	router := gin.Default()
 	hospital.ConnectDB()
 
-	router.GET("api/hospital", diagnosehandler.SelectAll)
-	router.POST("api/hospital", diagnosehandler.Create)
-	router.GET("api/hospital/:id", diagnosehandler.Read)
-	router.PUT("api/hospital/:id", diagnosehandler.SelectAll)
-	router.DELETE("api/hospital/:id", diagnosehandler.Delete)
+	// Diagnose routes
+	router.GET("api/hospital/diagnoses", diagnosehandler.SelectAll)
+	router.POST("api/hospital/diagnoses", diagnosehandler.Create)
+	router.GET("api/hospital/diagnoses/:id", diagnosehandler.Read)
+	router.PUT("api/hospital/diagnoses/:id", diagnosehandler.Update)
+	router.DELETE("api/hospital/diagnoses/:id", diagnosehandler.Delete)
 
-	router.GET("api/hospital", doctorhandler.SelectAll)
-	router.POST("api/hospital", doctorhandler.Create)
-	router.GET("api/hospital/:id", doctorhandler.Read)
-	router.PUT("api/hospital/:id", doctorhandler.SelectAll)
-	router.DELETE("api/hospital/:id", doctorhandler.Delete)
+	// Doctor routes
+	router.GET("api/hospital/doctors", doctorhandler.SelectAll)
+	router.POST("api/hospital/doctors", doctorhandler.Create)
+	router.GET("api/hospital/doctors/:id", doctorhandler.Read)
+	router.PUT("api/hospital/doctors/:id", doctorhandler.Update)
+	router.DELETE("api/hospital/doctors/:id", doctorhandler.Delete)
 
-	router.GET("api/hospital", patienthandler.SelectAll)
-	router.POST("api/hospital", patienthandler.Create)
-	router.GET("api/hospital/:id", patienthandler.Read)
-	router.PUT("api/hospital/:id", patienthandler.SelectAll)
-	router.DELETE("api/hospital/:id", patienthandler.Delete)
+	// Patient routes
+	router.GET("api/hospital/patients", patienthandler.SelectAll)
+	router.POST("api/hospital/patients", patienthandler.Create)
+	router.GET("api/hospital/patients/:id", patienthandler.Read)
+	router.PUT("api/hospital/patients/:id", patienthandler.Update)
+	router.DELETE("api/hospital/patients/:id", patienthandler.Delete)
 
-	router.GET("api/hospital", paymenthandler.SelectAll)
-	router.POST("api/hospital", paymenthandler.Create)
-	router.GET("api/hospital/:id", paymenthandler.Read)
-	router.PUT("api/hospital/:id", paymenthandler.SelectAll)
-	router.DELETE("api/hospital/:id", paymenthandler.Delete)
+	// Payment routes
+	router.GET("api/hospital/payments", paymenthandler.SelectAll)
+	router.POST("api/hospital/payments", paymenthandler.Create)
+	router.GET("api/hospital/payments/:id", paymenthandler.Read)
+	router.PUT("api/hospital/payments/:id", paymenthandler.Update)
+	router.DELETE("api/hospital/payments/:id", paymenthandler.Delete)
 
-	router.GET("api/hospital", roomhandler.SelectAll)
-	router.POST("api/hospital", roomhandler.Create)
-	router.GET("api/hospital/:id", roomhandler.Read)
-	router.PUT("api/hospital/:id", roomhandler.SelectAll)
-	router.DELETE("api/hospital/:id", roomhandler.Delete)
+	// Room routes
+	router.GET("api/hospital/rooms", roomhandler.SelectAll)
+	router.POST("api/hospital/rooms", roomhandler.Create)
+	router.GET("api/hospital/rooms/:id", roomhandler.Read)
+	router.PUT("api/hospital/rooms/:id", roomhandler.Update)
+	router.DELETE("api/hospital/rooms/:id", roomhandler.Delete)
 
 	router.Run("localhost:8080")
-=======
-	"encoding/json"
-	"io"
-	"net/http"
-	us "user"
-)
-
-func cekError(err error) {
-	if err != nil {
-		panic(err.Error())
-	}
-}
-
-func selectAll(w http.ResponseWriter, r *http.Request) {
-	usr := us.SelectAll()
-	data, err := json.Marshal(usr)
-	cekError(err)
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, string(data))
-}
-
-func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/tampilUserAll", selectAll)
-
-	http.ListenAndServe(":5050", mux)
->>>>>>> 4ddc1a594af2da5174929ba49b82ad8f052bcf82
 }
