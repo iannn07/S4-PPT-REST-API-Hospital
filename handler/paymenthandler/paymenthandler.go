@@ -20,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	payment := hospital.Payment{Paytotal: input.Paytotal}
+	payment := hospital.Payment{PayTotal: input.PayTotal}
 	hospital.DB.Create(&payment)
 
 	c.JSON(http.StatusOK, gin.H{"data": payment})

@@ -20,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	room := hospital.Room{Roomtype: input.Roomtype}
+	room := hospital.Room{RoomType: input.RoomType}
 	hospital.DB.Create(&room)
 
 	c.JSON(http.StatusOK, gin.H{"data": room})

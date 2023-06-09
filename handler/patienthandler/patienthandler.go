@@ -20,7 +20,7 @@ func Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	patient := hospital.Patient{Patientname: input.Patientname, Patientdob: input.Patientdob, Patientgender: input.Patientgender}
+	patient := hospital.Patient{PatientName: input.PatientName, PatientDOB: input.PatientDOB, PatientGender: input.PatientGender}
 	hospital.DB.Create(&patient)
 
 	c.JSON(http.StatusOK, gin.H{"data": patient})
