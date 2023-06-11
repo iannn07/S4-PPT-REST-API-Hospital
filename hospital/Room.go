@@ -13,9 +13,9 @@ type RoomInput struct {
 }
 
 type RoomResponse struct {
-	RoomID    int    			`json:"room_id"`
-	PatientID int    			`json:"patient_id"`
-	RoomType  string 			`json:"room_type"`
+	RoomID    int    `json:"room_id"`
+	PatientID int    `json:"patient_id"`
+	RoomType  string `json:"room_type"`
 }
 
 type RoomListResponse struct {

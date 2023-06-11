@@ -18,11 +18,11 @@ type DiagnoseInput struct {
 }
 
 type DiagnoseResponse struct {
-	DiagnosisID          int    			`json:"diagnosis_id"`
-	PatientID            int    			`json:"patient_id"`
-	DoctorID             int    			`json:"doctor_id"`
-	DiagnosisDate        string 			`json:"diagnosis_date"`
-	DiagnosisDescription string 			`json:"diagnosis_description"`
+	DiagnosisID          int    `json:"diagnosis_id"`
+	PatientID            int    `json:"patient_id"`
+	DoctorID             int    `json:"doctor_id"`
+	DiagnosisDate        string `json:"diagnosis_date"`
+	DiagnosisDescription string `json:"diagnosis_description"`
 }
 
 type DiagnoseListResponse struct {

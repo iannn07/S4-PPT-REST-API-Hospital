@@ -1,8 +1,9 @@
 package diagnosehandler
 
 import (
-	"net/http"
 	"HospitalFinpro/hospital"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,7 @@ func SelectAll(c *gin.Context) {
 	for _, diagnose := range diagnoses {
 		diagnoseResponse := hospital.DiagnoseResponse{
 			DiagnosisID:          diagnose.DiagnoseID,
-			DiagnosisDate:		  diagnose.DiagnosisDate,
+			DiagnosisDate:        diagnose.DiagnosisDate,
 			DiagnosisDescription: diagnose.DiagnosisDescription,
 			PatientID:            diagnose.PatientID,
 			DoctorID:             diagnose.DoctorID,
@@ -33,7 +34,7 @@ func Create(c *gin.Context) {
 	}
 
 	diagnose := hospital.Diagnose{
-		DiagnosisDate:		  diagnoseInput.DiagnosisDate,
+		DiagnosisDate:        diagnoseInput.DiagnosisDate,
 		DiagnosisDescription: diagnoseInput.DiagnosisDescription,
 		PatientID:            diagnoseInput.PatientID,
 		DoctorID:             diagnoseInput.DoctorID,
@@ -46,7 +47,7 @@ func Create(c *gin.Context) {
 
 	diagnoseResponse := hospital.DiagnoseResponse{
 		DiagnosisID:          diagnose.DiagnoseID,
-		DiagnosisDate:		  diagnoseInput.DiagnosisDate,
+		DiagnosisDate:        diagnoseInput.DiagnosisDate,
 		DiagnosisDescription: diagnose.DiagnosisDescription,
 		PatientID:            diagnose.PatientID,
 		DoctorID:             diagnose.DoctorID,
@@ -64,7 +65,7 @@ func Read(c *gin.Context) {
 
 	diagnoseResponse := hospital.DiagnoseResponse{
 		DiagnosisID:          diagnose.DiagnoseID,
-		DiagnosisDate:		  diagnose.DiagnosisDate,
+		DiagnosisDate:        diagnose.DiagnosisDate,
 		DiagnosisDescription: diagnose.DiagnosisDescription,
 		PatientID:            diagnose.PatientID,
 		DoctorID:             diagnose.DoctorID,
@@ -86,7 +87,7 @@ func Update(c *gin.Context) {
 		return
 	}
 
-	diagnose.DiagnosisDate =	  diagnoseInput.DiagnosisDate
+	diagnose.DiagnosisDate = diagnoseInput.DiagnosisDate
 	diagnose.DiagnosisDescription = diagnoseInput.DiagnosisDescription
 	diagnose.PatientID = diagnoseInput.PatientID
 	diagnose.DoctorID = diagnoseInput.DoctorID
@@ -98,7 +99,7 @@ func Update(c *gin.Context) {
 
 	diagnoseResponse := hospital.DiagnoseResponse{
 		DiagnosisID:          diagnose.DiagnoseID,
-		DiagnosisDate:		  diagnose.DiagnosisDate,
+		DiagnosisDate:        diagnose.DiagnosisDate,
 		DiagnosisDescription: diagnose.DiagnosisDescription,
 		PatientID:            diagnose.PatientID,
 		DoctorID:             diagnose.DoctorID,

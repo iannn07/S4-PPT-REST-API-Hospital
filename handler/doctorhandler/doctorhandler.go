@@ -1,9 +1,10 @@
 package doctorhandler
 
 import (
+	"HospitalFinpro/hospital"
 	"fmt"
 	"net/http"
-	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
 )
 

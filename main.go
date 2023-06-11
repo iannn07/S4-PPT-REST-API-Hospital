@@ -7,6 +7,7 @@ import (
 	"HospitalFinpro/handler/paymenthandler"
 	"HospitalFinpro/handler/roomhandler"
 	"HospitalFinpro/hospital"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -57,6 +58,6 @@ func main() {
 	router.PUT("api/hospital/payments/:id", paymenthandler.Update)
 	router.DELETE("api/hospital/payments/:id", paymenthandler.Delete)
 
-	// Route Prefix Address
+	// Route Prefix Addresss
 	router.Run("localhost:8080")
 }

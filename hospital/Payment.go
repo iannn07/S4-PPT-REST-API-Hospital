@@ -13,9 +13,9 @@ type PaymentInput struct {
 }
 
 type PaymentResponse struct {
-	PayID     int    			`json:"pay_id"`
-	PatientID int    			`json:"patient_id"`
-	PayTotal  string 			`json:"pay_total"`
+	PayID     int    `json:"pay_id"`
+	PatientID int    `json:"patient_id"`
+	PayTotal  string `json:"pay_total"`
 }
 
 type PaymentListResponse struct {
