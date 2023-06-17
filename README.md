@@ -20,9 +20,9 @@ go run main.go
 ### Jangan lupa untuk menyalakan MYSQL server
 
 ## Use
-### Jangan lupa Register, karena database masih kosong!
-### Jangan lupa login untuk mendapatkan token!
-### Jangan lupa untuk set header 'Authorization' tambahkan token yang didapat setelah login
+#### Jangan lupa Register, karena database masih kosong!
+#### Jangan lupa login untuk mendapatkan token!
+#### Jangan lupa untuk set header 'Authorization' tambahkan token yang didapat setelah login
   
 ## Desain Database
 <img src="https://github.com/syauqqii/S4-PPT-REST-API-Hospital/blob/main/Others/erd%20hospital.png">
