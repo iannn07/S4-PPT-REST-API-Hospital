@@ -1,8 +1,8 @@
 ## Rest API (Popular Programming Language) GOLANG
-<add description here>
+add description here
 
 ## Instalasi
-<add instalation here>
+add instalation here
 
 ## Requirement
 Import: [FILE POSTMAN](https://github.com/syauqqii/S4-PPT-REST-API-Hospital/blob/main/Others/Hospital%20API.postman_collection.json) untuk test API
