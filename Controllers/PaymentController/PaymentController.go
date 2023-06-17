@@ -1,20 +1,20 @@
-package paymenthandler
+package PaymentController
 
 import (
-	"HospitalFinpro/hospital"
 	"net/http"
-
+	"HospitalFinpro/Models"
+	"HospitalFinpro/Database"
 	"github.com/gin-gonic/gin"
 )
 
 func SelectAll(c *gin.Context) {
-	var payments []hospital.Payment
-	hospital.DB.Find(&payments)
+	var payments []Models.Payment
+	Database.DB.Find(&payments)
 
-	var paymentResponses []hospital.PaymentResponse
+	var paymentResponses []Models.PaymentResponse
 	for _, payment := range payments {
-		paymentResponse := hospital.PaymentResponse{
-			PayID:     payment.PayID,
+		paymentResponse := Models.PaymentResponse{
+			ID:     payment.ID,
 			PatientID: payment.PatientID,
 			PayTotal:  payment.PayTotal,
 		}
@@ -25,23 +25,23 @@ func SelectAll(c *gin.Context) {
 }
 
 func Create(c *gin.Context) {
-	var paymentInput hospital.PaymentInput
+	var paymentInput Models.PaymentInput
 	if err := c.ShouldBindJSON(&paymentInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	payment := hospital.Payment{
+	payment := Models.Payment{
 		PatientID: paymentInput.PatientID,
 		PayTotal:  paymentInput.PayTotal,
 	}
-	if err := hospital.DB.Create(&payment).Error; err != nil {
+	if err := Database.DB.Create(&payment).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create payment"})
 		return
 	}
 
-	paymentResponse := hospital.PaymentResponse{
-		PayID:     payment.PayID,
+	paymentResponse := Models.PaymentResponse{
+		ID:     payment.ID,
 		PatientID: payment.PatientID,
 		PayTotal:  payment.PayTotal,
 	}
@@ -50,14 +50,14 @@ func Create(c *gin.Context) {
 }
 
 func Read(c *gin.Context) {
-	var payment hospital.Payment
-	if err := hospital.DB.Where("pay_id = ?", c.Param("id")).First(&payment).Error; err != nil {
+	var payment Models.Payment
+	if err := Database.DB.Where("pay_id = ?", c.Param("id")).First(&payment).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	paymentResponse := hospital.PaymentResponse{
-		PayID:     payment.PayID,
+	paymentResponse := Models.PaymentResponse{
+		ID:     payment.ID,
 		PatientID: payment.PatientID,
 		PayTotal:  payment.PayTotal,
 	}
@@ -66,13 +66,13 @@ func Read(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	var payment hospital.Payment
-	if err := hospital.DB.Where("pay_id = ?", c.Param("id")).First(&payment).Error; err != nil {
+	var payment Models.Payment
+	if err := Database.DB.Where("pay_id = ?", c.Param("id")).First(&payment).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	var paymentInput hospital.PaymentInput
+	var paymentInput Models.PaymentInput
 	if err := c.ShouldBindJSON(&paymentInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -81,13 +81,13 @@ func Update(c *gin.Context) {
 	payment.PatientID = paymentInput.PatientID
 	payment.PayTotal = paymentInput.PayTotal
 
-	if err := hospital.DB.Save(&payment).Error; err != nil {
+	if err := Database.DB.Save(&payment).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update payment"})
 		return
 	}
 
-	paymentResponse := hospital.PaymentResponse{
-		PayID:     payment.PayID,
+	paymentResponse := Models.PaymentResponse{
+		ID:     payment.ID,
 		PatientID: payment.PatientID,
 		PayTotal:  payment.PayTotal,
 	}
@@ -96,13 +96,13 @@ func Update(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var payment hospital.Payment
-	if err := hospital.DB.Where("pay_id = ?", c.Param("id")).First(&payment).Error; err != nil {
+	var payment Models.Payment
+	if err := Database.DB.Where("pay_id = ?", c.Param("id")).First(&payment).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	if err := hospital.DB.Delete(&payment).Error; err != nil {
+	if err := Database.DB.Delete(&payment).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete payment"})
 		return
 	}

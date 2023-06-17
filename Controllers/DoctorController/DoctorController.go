@@ -1,21 +1,20 @@
-package doctorhandler
+package DoctorController
 
 import (
-	"HospitalFinpro/hospital"
-	"fmt"
 	"net/http"
-
+	"HospitalFinpro/Models"
+	"HospitalFinpro/Database"
 	"github.com/gin-gonic/gin"
 )
 
 func SelectAll(c *gin.Context) {
-	var doctors []hospital.Doctor
-	hospital.DB.Find(&doctors)
+	var doctors []Models.Doctor
+	Database.DB.Find(&doctors)
 
-	var doctorResponses []hospital.DoctorResponse
+	var doctorResponses []Models.DoctorResponse
 	for _, doctor := range doctors {
-		doctorResponse := hospital.DoctorResponse{
-			DoctorID:      doctor.DoctorID,
+		doctorResponse := Models.DoctorResponse{
+			ID:      doctor.ID,
 			DoctorName:    doctor.DoctorName,
 			DoctorLicense: doctor.DoctorLicense,
 		}
@@ -26,24 +25,24 @@ func SelectAll(c *gin.Context) {
 }
 
 func Create(c *gin.Context) {
-	var doctorInput hospital.DoctorInput
+	var doctorInput Models.DoctorInput
 	if err := c.ShouldBindJSON(&doctorInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	doctor := hospital.Doctor{
+	doctor := Models.Doctor{
 		DoctorName:    doctorInput.DoctorName,
 		DoctorLicense: doctorInput.DoctorLicense,
 	}
 
-	if err := hospital.DB.Create(&doctor).Error; err != nil {
+	if err := Database.DB.Create(&doctor).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create doctor"})
 		return
 	}
 
-	doctorResponse := hospital.DoctorResponse{
-		DoctorID:      doctor.DoctorID,
+	doctorResponse := Models.DoctorResponse{
+		ID:      doctor.ID,
 		DoctorName:    doctor.DoctorName,
 		DoctorLicense: doctor.DoctorLicense,
 	}
@@ -52,14 +51,14 @@ func Create(c *gin.Context) {
 }
 
 func Read(c *gin.Context) {
-	var doctor hospital.Doctor
-	if err := hospital.DB.Where("doctor_id = ?", c.Param("id")).First(&doctor).Error; err != nil {
+	var doctor Models.Doctor
+	if err := Database.DB.Where("doctor_id = ?", c.Param("id")).First(&doctor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "DATA TIDAK DITEMUKAN!"})
 		return
 	}
 
-	doctorResponse := hospital.DoctorResponse{
-		DoctorID:      doctor.DoctorID,
+	doctorResponse := Models.DoctorResponse{
+		ID:      doctor.ID,
 		DoctorName:    doctor.DoctorName,
 		DoctorLicense: doctor.DoctorLicense,
 	}
@@ -68,14 +67,13 @@ func Read(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	var doctor hospital.Doctor
-	fmt.Println(c.Param("id"))
-	if err := hospital.DB.Where("doctor_id = ?", c.Param("id")).First(&doctor).Error; err != nil {
+	var doctor Models.Doctor
+	if err := Database.DB.Where("doctor_id = ?", c.Param("id")).First(&doctor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "DATA TIDAK DITEMUKAN!"})
 		return
 	}
 
-	var doctorInput hospital.DoctorInput
+	var doctorInput Models.DoctorInput
 	if err := c.ShouldBindJSON(&doctorInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -84,13 +82,13 @@ func Update(c *gin.Context) {
 	doctor.DoctorName = doctorInput.DoctorName
 	doctor.DoctorLicense = doctorInput.DoctorLicense
 
-	if err := hospital.DB.Save(&doctor).Error; err != nil {
+	if err := Database.DB.Save(&doctor).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update doctor"})
 		return
 	}
 
-	doctorResponse := hospital.DoctorResponse{
-		DoctorID:      doctor.DoctorID,
+	doctorResponse := Models.DoctorResponse{
+		ID:      doctor.ID,
 		DoctorName:    doctor.DoctorName,
 		DoctorLicense: doctor.DoctorLicense,
 	}
@@ -99,13 +97,13 @@ func Update(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var doctor hospital.Doctor
-	if err := hospital.DB.Where("doctor_id = ?", c.Param("id")).First(&doctor).Error; err != nil {
+	var doctor Models.Doctor
+	if err := Database.DB.Where("doctor_id = ?", c.Param("id")).First(&doctor).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "DATA TIDAK DITEMUKAN!"})
 		return
 	}
 
-	if err := hospital.DB.Delete(&doctor).Error; err != nil {
+	if err := Database.DB.Delete(&doctor).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete doctor"})
 		return
 	}

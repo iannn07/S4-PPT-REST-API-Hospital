@@ -1,20 +1,20 @@
-package patienthandler
+package PatientController
 
 import (
-	"HospitalFinpro/hospital"
 	"net/http"
-
+	"HospitalFinpro/Models"
+	"HospitalFinpro/Database"
 	"github.com/gin-gonic/gin"
 )
 
 func SelectAll(c *gin.Context) {
-	var patients []hospital.Patient
-	hospital.DB.Find(&patients)
+	var patients []Models.Patient
+	Database.DB.Find(&patients)
 
-	var patientResponses []hospital.PatientResponse
+	var patientResponses []Models.PatientResponse
 	for _, patient := range patients {
-		patientResponse := hospital.PatientResponse{
-			PatientID:     patient.PatientID,
+		patientResponse := Models.PatientResponse{
+			ID:     	   patient.ID,
 			DoctorID:      patient.DoctorID,
 			PatientName:   patient.PatientName,
 			PatientDOB:    patient.PatientDOB,
@@ -27,26 +27,26 @@ func SelectAll(c *gin.Context) {
 }
 
 func Create(c *gin.Context) {
-	var patientInput hospital.PatientInput
+	var patientInput Models.PatientInput
 	if err := c.ShouldBindJSON(&patientInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	patient := hospital.Patient{
+	patient := Models.Patient{
 		PatientName:   patientInput.PatientName,
 		PatientDOB:    patientInput.PatientDOB,
 		PatientGender: patientInput.PatientGender,
 		DoctorID:      patientInput.DoctorID,
 	}
 
-	if err := hospital.DB.Create(&patient).Error; err != nil {
+	if err := Database.DB.Create(&patient).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create patient"})
 		return
 	}
 
-	patientResponse := hospital.PatientResponse{
-		PatientID:     patient.PatientID,
+	patientResponse := Models.PatientResponse{
+		ID:     	   patient.ID,
 		DoctorID:      patient.DoctorID,
 		PatientName:   patient.PatientName,
 		PatientDOB:    patient.PatientDOB,
@@ -57,14 +57,14 @@ func Create(c *gin.Context) {
 }
 
 func Read(c *gin.Context) {
-	var patient hospital.Patient
-	if err := hospital.DB.Where("patient_id = ?", c.Param("id")).First(&patient).Error; err != nil {
+	var patient Models.Patient
+	if err := Database.DB.Where("patient_id = ?", c.Param("id")).First(&patient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	patientResponse := hospital.PatientResponse{
-		PatientID:     patient.PatientID,
+	patientResponse := Models.PatientResponse{
+		ID:     	   patient.ID,
 		DoctorID:      patient.DoctorID,
 		PatientName:   patient.PatientName,
 		PatientDOB:    patient.PatientDOB,
@@ -75,13 +75,13 @@ func Read(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	var patient hospital.Patient
-	if err := hospital.DB.Where("patient_id = ?", c.Param("id")).First(&patient).Error; err != nil {
+	var patient Models.Patient
+	if err := Database.DB.Where("patient_id = ?", c.Param("id")).First(&patient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	var patientInput hospital.PatientInput
+	var patientInput Models.PatientInput
 	if err := c.ShouldBindJSON(&patientInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -92,13 +92,13 @@ func Update(c *gin.Context) {
 	patient.PatientGender = patientInput.PatientGender
 	patient.DoctorID = patientInput.DoctorID
 
-	if err := hospital.DB.Save(&patient).Error; err != nil {
+	if err := Database.DB.Save(&patient).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update patient"})
 		return
 	}
 
-	patientResponse := hospital.PatientResponse{
-		PatientID:     patient.PatientID,
+	patientResponse := Models.PatientResponse{
+		ID:    		   patient.ID,
 		DoctorID:      patient.DoctorID,
 		PatientName:   patient.PatientName,
 		PatientDOB:    patient.PatientDOB,
@@ -109,13 +109,13 @@ func Update(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var patient hospital.Patient
-	if err := hospital.DB.Where("patient_id = ?", c.Param("id")).First(&patient).Error; err != nil {
+	var patient Models.Patient
+	if err := Database.DB.Where("patient_id = ?", c.Param("id")).First(&patient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	if err := hospital.DB.Delete(&patient).Error; err != nil {
+	if err := Database.DB.Delete(&patient).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete patient"})
 		return
 	}

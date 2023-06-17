@@ -1,20 +1,20 @@
-package roomhandler
+package RoomController
 
 import (
-	"HospitalFinpro/hospital"
 	"net/http"
-
+	"HospitalFinpro/Models"
+	"HospitalFinpro/Database"
 	"github.com/gin-gonic/gin"
 )
 
 func SelectAll(c *gin.Context) {
-	var rooms []hospital.Room
-	hospital.DB.Find(&rooms)
+	var rooms []Models.Room
+	Database.DB.Find(&rooms)
 
-	var roomResponses []hospital.RoomResponse
+	var roomResponses []Models.RoomResponse
 	for _, room := range rooms {
-		roomResponse := hospital.RoomResponse{
-			RoomID:    room.RoomID,
+		roomResponse := Models.RoomResponse{
+			ID:    room.ID,
 			PatientID: room.PatientID,
 			RoomType:  room.RoomType,
 		}
@@ -25,20 +25,20 @@ func SelectAll(c *gin.Context) {
 }
 
 func Create(c *gin.Context) {
-	var roomInput hospital.RoomInput
+	var roomInput Models.RoomInput
 	if err := c.ShouldBindJSON(&roomInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	room := hospital.Room{
+	room := Models.Room{
 		PatientID: roomInput.PatientID,
 		RoomType:  roomInput.RoomType,
 	}
-	hospital.DB.Create(&room)
+	Database.DB.Create(&room)
 
-	roomResponse := hospital.RoomResponse{
-		RoomID:    room.RoomID,
+	roomResponse := Models.RoomResponse{
+		ID:    room.ID,
 		PatientID: room.PatientID,
 		RoomType:  room.RoomType,
 	}
@@ -47,14 +47,14 @@ func Create(c *gin.Context) {
 }
 
 func Read(c *gin.Context) {
-	var room hospital.Room
-	if err := hospital.DB.Where("room_id = ?", c.Param("id")).First(&room).Error; err != nil {
+	var room Models.Room
+	if err := Database.DB.Where("room_id = ?", c.Param("id")).First(&room).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	roomResponse := hospital.RoomResponse{
-		RoomID:    room.RoomID,
+	roomResponse := Models.RoomResponse{
+		ID:    room.ID,
 		PatientID: room.PatientID,
 		RoomType:  room.RoomType,
 	}
@@ -63,13 +63,13 @@ func Read(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	var room hospital.Room
-	if err := hospital.DB.Where("room_id = ?", c.Param("id")).First(&room).Error; err != nil {
+	var room Models.Room
+	if err := Database.DB.Where("room_id = ?", c.Param("id")).First(&room).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	var roomInput hospital.RoomInput
+	var roomInput Models.RoomInput
 	if err := c.ShouldBindJSON(&roomInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -77,10 +77,10 @@ func Update(c *gin.Context) {
 
 	room.PatientID = roomInput.PatientID
 	room.RoomType = roomInput.RoomType
-	hospital.DB.Save(&room)
+	Database.DB.Save(&room)
 
-	roomResponse := hospital.RoomResponse{
-		RoomID:    room.RoomID,
+	roomResponse := Models.RoomResponse{
+		ID:    room.ID,
 		PatientID: room.PatientID,
 		RoomType:  room.RoomType,
 	}
@@ -89,13 +89,13 @@ func Update(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var room hospital.Room
-	if err := hospital.DB.Where("room_id = ?", c.Param("id")).First(&room).Error; err != nil {
+	var room Models.Room
+	if err := Database.DB.Where("room_id = ?", c.Param("id")).First(&room).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "NO DATA!"})
 		return
 	}
 
-	hospital.DB.Delete(&room)
+	Database.DB.Delete(&room)
 
 	c.JSON(http.StatusOK, gin.H{"data": true})
 }
